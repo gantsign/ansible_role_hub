@@ -1,2 +1,120 @@
 ---
-# tasks file for ansible-role-hub
+- name: install dependencies
+  become: yes
+  package:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - git
+    - man-db
+    - tar
+
+- name: create download directory
+  file:
+    state: directory
+    mode: 'u=rwx,go=rx'
+    dest: '{{ hub_download_dir }}'
+
+- name: download Hub
+  get_url:
+    url: '{{ hub_mirror }}/{{ hub_redis_filename }}'
+    dest: '{{ hub_download_dir }}/{{ hub_redis_filename }}'
+    sha256sum: '{{ hub_redis_sha256sum }}'
+    force: no
+    use_proxy: yes
+    validate_certs: yes
+    mode: 'u=rw,go=r'
+
+- name: create the Hub extracted directory
+  file:
+    state: directory
+    mode: 'u=rwx,go=rx'
+    dest: '{{ hub_redis_extracted_dir }}'
+
+- name: extract Hub
+  unarchive:
+    src: '{{ hub_download_dir }}/{{ hub_redis_filename }}'
+    remote_src: yes
+    extra_opts: '--strip-components=1'
+    dest: '{{ hub_redis_extracted_dir }}'
+    creates: '{{ hub_redis_extracted_dir }}/bin/hub'
+
+- name: create the Hub installation directories
+  become: yes
+  file:
+    state: directory
+    owner: root
+    group: root
+    mode: 'u=rwx,go=rx'
+    dest: '{{ item }}'
+  with_items:
+    - '/usr/local/bin'
+    - '/usr/local/share/man/man1'
+    - '/usr/local/share/hub/zsh'
+
+- name: install Hub executable
+  become: yes
+  copy:
+    src: '{{ hub_redis_extracted_dir }}/bin/hub'
+    remote_src: yes
+    dest: '/usr/local/bin/hub'
+    owner: root
+    group: root
+    mode: 'u=rwx,go=rx'
+
+- name: install Hub man pages
+  become: yes
+  copy:
+    src: '{{ hub_redis_extracted_dir }}/share/man/man1/{{ item }}'
+    remote_src: yes
+    dest: '/usr/local/share/man/man1/{{ item }}'
+    owner: root
+    group: root
+    mode: 'u=rw,go=r'
+  notify:
+    - mandb
+  with_items:
+    - 'hub-alias.1'
+    - 'hub-am.1'
+    - 'hub-apply.1'
+    - 'hub-browse.1'
+    - 'hub-checkout.1'
+    - 'hub-cherry-pick.1'
+    - 'hub-ci-status.1'
+    - 'hub-clone.1'
+    - 'hub-compare.1'
+    - 'hub-create.1'
+    - 'hub-delete.1'
+    - 'hub-fetch.1'
+    - 'hub-fork.1'
+    - 'hub-help.1'
+    - 'hub-init.1'
+    - 'hub-issue.1'
+    - 'hub-merge.1'
+    - 'hub-pr.1'
+    - 'hub-pull-request.1'
+    - 'hub-push.1'
+    - 'hub-release.1'
+    - 'hub-remote.1'
+    - 'hub-submodule.1'
+    - 'hub-sync.1'
+    - 'hub.1'
+
+- name: install Hub zsh completion script
+  become: yes
+  copy:
+    src: '{{ hub_redis_extracted_dir }}/etc/hub.zsh_completion'
+    remote_src: yes
+    dest: '/usr/local/share/hub/zsh/_hub'
+    owner: root
+    group: root
+    mode: 'u=rw,go=r'
+
+- name: install Hub zsh plugin script
+  become: yes
+  copy:
+    content: 'eval "$(hub alias -s)"'
+    dest: '/usr/local/share/hub/zsh/hub.plugin.zsh'
+    owner: root
+    group: root
+    mode: 'u=rw,go=r'
