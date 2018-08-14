@@ -1,2 +1,18 @@
 ---
-# vars file for ansible-role-hub
+# Mirror to download the Hub from
+hub_mirror: 'https://github.com/github/hub/releases/download/v{{ hub_version }}'
+
+# The OS of the Hub redistributable package
+hub_os: 'linux'
+
+# The CPU architecture of the Hub redistributable package
+hub_architecture: 'amd64'
+
+# File name of the Hub redistributable package without extension
+hub_redis_filename_base: 'hub-{{ hub_os }}-{{ hub_architecture }}-{{ hub_version }}'
+
+# File name of the Hub redistributable package
+hub_redis_filename: '{{ hub_redis_filename_base }}.tgz'
+
+# Located of the extracted Hub redistributable package
+hub_redis_extracted_dir: '{{ hub_download_dir }}/{{ hub_redis_filename_base }}'
