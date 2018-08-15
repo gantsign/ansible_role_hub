@@ -1,0 +1,6 @@
+---
+# Dependencies for Hub runtime/install
+hub_dependencies:
+  - git
+  - man
+  - tar
