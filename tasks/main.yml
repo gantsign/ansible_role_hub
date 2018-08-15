@@ -1,13 +1,16 @@
 ---
+- name: include OS family specific vars
+  with_first_found:
+    - '../vars/os-families/{{ ansible_os_family }}.yml'
+    - ../vars/os-families/default.yml
+  include_vars: '{{ item }}'
+
 - name: install dependencies
   become: yes
   package:
     name: '{{ item }}'
     state: present
-  with_items:
-    - git
-    - man-db
-    - tar
+  with_items: '{{ hub_dependencies }}'
 
 - name: create download directory
   file:
@@ -61,6 +64,14 @@
     owner: root
     group: root
     mode: 'u=rwx,go=rx'
+
+# Workaround for: https://github.com/openSUSE/docker-containers-build/issues/27
+- name: fix man directory owner (Suse)
+  file:
+    path: '/var/cache/man'
+    state: directory
+    owner: man
+  when: ansible_os_family == 'Suse'
 
 - name: install Hub man pages
   become: yes
