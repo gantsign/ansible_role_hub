@@ -16,8 +16,8 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     '/usr/local/share/hub',
     '/usr/local/share/hub/zsh',
 ])
-def test_directories(File, dir_path):
-    dir = File(dir_path)
+def test_directories(host, dir_path):
+    dir = host.file(dir_path)
     assert dir.exists
     assert dir.is_directory
     assert dir.user == 'root'
@@ -54,15 +54,15 @@ def test_directories(File, dir_path):
     '/usr/local/share/hub/zsh/_hub',
     '/usr/local/share/hub/zsh/hub.plugin.zsh',
 ])
-def test_files(Command, File, file_path):
-    installed_file = File(file_path)
+def test_files(host, file_path):
+    installed_file = host.file(file_path)
     assert installed_file.exists
     assert installed_file.is_file
     assert installed_file.user == 'root'
     assert installed_file.group == 'root'
 
 
-def test_version(Command, File):
-    version = Command.check_output('hub --version')
+def test_version(host):
+    version = host.check_output('hub --version')
     pattern = 'hub version [0-9\\.]+'
     assert re.search(pattern, version)
