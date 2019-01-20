@@ -1,9 +1,9 @@
 ---
 # Hub version number
-hub_version: '2.6.0'
+hub_version: '2.7.1'
 
 # The SHA256 of the Hub redistributable package
-hub_redis_sha256sum: '98cad5b7cff4b9b3d31cf29100c6453358dd0e37e28ba57a1c85ec289fe03d3e'
+hub_redis_sha256sum: 'aaadce2bf2f58e2dff552c0676964044c53a92c14179cac624bd33c6ca89d44a'
 
 # Directory to store files downloaded for Hub
 hub_download_dir: "{{ x_ansible_download_dir | default(ansible_env.HOME + '/.ansible/tmp/downloads') }}"
