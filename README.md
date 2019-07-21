@@ -11,7 +11,7 @@ command-line wrapper for Git that adds features for GitHub repositories.
 Requirements
 ------------
 
-* Ansible >= 2.5
+* Ansible >= 2.6
 
 * Linux Distribution
 
