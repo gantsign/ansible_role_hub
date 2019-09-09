@@ -53,10 +53,10 @@ The following variables will change the behavior of this role:
 
 ```yaml
 # Hub version number
-hub_version: '2.12.3'
+hub_version: '2.12.4'
 
 # The SHA256 of the Hub redistributable package
-hub_redis_sha256sum: 'c0e9ce0f878cfe053aeabc8f99f105acba38ab08909411f3dec82801a76b6f8d'
+hub_redis_sha256sum: 'f51831b9bf357f6b64d46b98eb2066bf6d968fb060d6da9a800b1f2523e2e2c9'
 
 # Directory to store files downloaded for Hub
 hub_download_dir: "{{ x_ansible_download_dir | default(ansible_env.HOME + '/.ansible/tmp/downloads') }}"
