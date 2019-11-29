@@ -8,9 +8,8 @@
 - name: install dependencies
   become: yes
   package:
-    name: '{{ item }}'
+    name: '{{ hub_dependencies }}'
     state: present
-  with_items: '{{ hub_dependencies }}'
 
 - name: create download directory
   file:
