@@ -21,7 +21,7 @@
   get_url:
     url: '{{ hub_mirror }}/{{ hub_redis_filename }}'
     dest: '{{ hub_download_dir }}/{{ hub_redis_filename }}'
-    sha256sum: '{{ hub_redis_sha256sum }}'
+    checksum: 'sha256:{{ hub_redis_sha256sum }}'
     force: no
     use_proxy: yes
     validate_certs: yes
