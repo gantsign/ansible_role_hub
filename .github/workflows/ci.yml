@@ -25,6 +25,7 @@ jobs:
           - debian_max
           - debian_min
           - ubuntu_max
+          - fedora
           - opensuse
         include:
           - ansible-version: '2.8.16'
