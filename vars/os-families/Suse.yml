@@ -5,3 +5,4 @@ hub_dependencies:
   - man
   - tar
   - gzip
+  - zsh

@@ -130,3 +130,11 @@
     owner: root
     group: root
     mode: 'u=rw,go=r'
+
+- name: compile Hub zsh plugin script
+  become: yes
+  # zcompile is a Zsh shell function so much be run from Zsh shell
+  shell:  # noqa 305
+    executable: /usr/bin/zsh
+    cmd: zcompile -UR /usr/local/share/hub/zsh/hub.plugin.zsh
+    creates: /usr/local/share/hub/zsh/hub.plugin.zsh.zwc

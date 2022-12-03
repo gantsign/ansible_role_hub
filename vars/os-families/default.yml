@@ -4,3 +4,4 @@ hub_dependencies:
   - git
   - man-db
   - tar
+  - zsh
